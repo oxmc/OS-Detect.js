@@ -170,7 +170,8 @@ OS = {
     "Version": `${windowsversion}`
   },
   "ISIOS": `${IOS}`,
-  "ISMobile": `${Mobile}`
+  "ISMobile": `${Mobile}`,
+  "Type": `${Type}`
 }
 
 /* Clear variables*/
