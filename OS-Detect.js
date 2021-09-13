@@ -169,6 +169,9 @@ OS = {
   "Win": {
     "Version": `${windowsversion}`
   },
+  "Mac": {
+    "Version": `${macversion}`
+  },
   "ISIOS": `${IOS}`,
   "ISMobile": `${Mobile}`,
   "Type": `${Type}`
