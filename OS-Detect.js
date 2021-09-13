@@ -46,7 +46,7 @@ if (useragent.indexOf("Win") != -1) {
     } else {
       windowsversion = "";
     };
-    OSNAME = `Windows ${windowsversion} OS`;
+    OSNAME = `Windows OS`;
     Type = "Windows";
   };
 } else if (navigator.userAgent.match(/BlackBerry|BB|PlayBook/i)) {
