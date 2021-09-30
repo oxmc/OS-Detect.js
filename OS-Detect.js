@@ -2,15 +2,10 @@
 
 /*Variables*/
 var useragent = navigator.userAgent;
-var OSNAME;
-var OS;
-var browser;
+var OSNAME, OS, browser, Type, ConsoleType;
 var Mobile = "False";
-var Type;
 var IOS = "false";
-var iosversion;
-var macversion;
-var windowsversion;
+var iosversion, macversion, windowsversion, playstationversion;
 
 /*Detect if OS is Windows*/
 if (useragent.indexOf("Win") != -1) {
@@ -100,6 +95,7 @@ if (useragent.indexOf("Win") != -1) {
 } else if (navigator.appVersion.indexOf("Linux") != -1) {
   /*Detect if OS is Android*/
   if (/Android/.test(useragent)) {
+    androidversion = useragent.split('Android')[1].split(".")[0].trim()
     OSNAME = "Android OS";
     Type = "Android";
   } else {
@@ -110,6 +106,12 @@ if (useragent.indexOf("Win") != -1) {
 } else if (navigator.appVersion.indexOf("CrOS") != -1) {
   OSNAME = "Chrome OS";
   Type = "ChromeOS";
+  /* Detect if OS is Playstation */
+} else if (navigator.appVersion.indexOf("PlayStation") != -1) {
+  /* Detect version */
+  playstationversion = useragent.split('PlayStation')[1].split(".")[0].trim().replace('PlayStation', '').replace(' ', '');
+  OSNAME = "PlayStation OS";
+  Type = "PlayStation";
 } else {
   OSNAME = "Unkown";
   Type = "Unkown";
@@ -129,49 +131,55 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 /*Detect browser*/
 if (window.navigator.userAgent.indexOf("Chrome") > -1) {
   if (window.navigator.userAgent.indexOf("Edg") > -1) {
-    browser = `Edge ${useragent.split('Edg/')[1]}`;
+    browser = `Edge ${useragent.split('Edg/')[1].split(".")[0].trim()}`;
   } else if (window.navigator.userAgent.indexOf("Puffin") > -1) {
-    browser = `Puffin ${useragent.split('Puffin/')[1]}`;
+    browser = `Puffin ${useragent.split('Puffin/')[1].split(".")[0].trim()}`;
   } else {
-    browser = `Chrome ${useragent.split('Chrome/')[1].split("Safari")[0].trim()}`;
+    browser = `Chrome ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;
   };
 } else if (window.navigator.userAgent.indexOf("U;") > -1) {
   if (window.navigator.userAgent.indexOf("Silk") > -1) {
-    browser = `SilkBrowser ${useragent.split('Silk/')[1].split("Safari")[0].trim()}`;
+    browser = `SilkBrowser ${useragent.split('Silk/')[1].split(".")[0].trim()}`;
   } else {
     if (/UCBrowser/i.test(navigator.userAgent)) {
-      browser = `UCBrowser ${useragent.split('UCBrowser/')[1]}`;
+      browser = `UCBrowser ${useragent.split('UCBrowser')[1].split(".")[0].trim()}`;
     }
     browser = `unkown`;
   };
 } else if (window.navigator.userAgent.indexOf("SamsungBrowser/") > -1) {
-  browser = `SamsungBrowser ${useragent.split('SamsungBrowser/')[1]}`;
+  browser = `SamsungBrowser ${useragent.split('SamsungBrowser/')[1].split(".")[0].trim()}`;
 } else if (window.navigator.userAgent.indexOf("Opera") > -1) {
-  browser = `Opera ${useragent.split('Opera/')[1]}`;
+  browser = `Opera ${useragent.split('Opera/')[1].split(".")[0].trim()}`;
 } else if (window.navigator.userAgent.indexOf("Firefox") > -1) {
-  browser = `Firefox ${useragent.split('Firefox/')[1]}`;
+  browser = `Firefox ${useragent.split('Firefox/')[1].split(".")[0].trim()}`;
 } else if (window.navigator.userAgent.indexOf("Safari") > -1) {
-  browser = `Safari ${useragent.split('Safari/')[1]}`;
+  browser = `Safari ${useragent.split('Safari/')[1].split(".")[0].trim()}`;
 } else if (window.navigator.userAgent.indexOf("trident") > -1) {
-  browser = `Internet Explorer ${useragent.split('trident/')[1].trim()}`;
+  browser = `Internet Explorer ${useragent.split('trident/')[1].split(".")[0].trim()}`;
+} else if (OSNAME == "PlayStation OS") {
+  browser = `PlayStation ${playstationversion} Browser`;
+  ConsoleType = "PlayStation";
 };
 
 /*Make json based on variables*/
+version = "unkown";
+
+if (Type == "Windows") {
+  version = windowsversion
+} else if (Type == "Mac") {
+  version = macversion
+} else if (Type == "IOS") {
+  version = iosversion
+} else if (Type == "Android") {
+  version = androidversion
+}
 
 /*Convert variables to json*/
 OS = {
   "Name": `${OSNAME}`,
   "Browser": `${browser}`,
   "UserAgent": `${useragent}`,
-  "IOS": {
-    "Version": `${iosversion}`
-  },
-  "Win": {
-    "Version": `${windowsversion}`
-  },
-  "Mac": {
-    "Version": `${macversion}`
-  },
+  "Version": `${version}`,
   "ISIOS": `${IOS}`,
   "ISMobile": `${Mobile}`,
   "Type": `${Type}`
