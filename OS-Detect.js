@@ -87,10 +87,12 @@ if (useragent.indexOf("Win") != -1) {
     OSNAME = `Mac OS`;
     Type = "Mac";
   };
-  /*Detect if OS is Unix*/
+  /* Remove unix detection temporarily
+  //Detect if OS is Unix
 } else if (navigator.appVersion.indexOf("X11") != -1) {
   OSNAME = "Unix OS";
   Type = "Unix";
+*/
   /*Detect if OS is Linux or Android*/
 } else if (navigator.appVersion.indexOf("Linux") != -1) {
   /*Detect if OS is Android*/
