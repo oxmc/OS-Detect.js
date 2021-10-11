@@ -1,5 +1,5 @@
 # OS-Detect.js
-A javascript function to help display what OS is accessing the page.
+A javascript function to help detect what OS is accessing the page.
 
 # Example
 <a href="https://oxmc.github.io/OS-Detect.js/example.html">Here is a simple example</a>
@@ -30,10 +30,10 @@ If you want to detect for windows:
 If you want to detect for Iphone, Ipad, or Ipod:
 ```html
 <script>
-  if (OS.Type == "IOS") {
+  if (OS.ISIOS == "True") {
     alert("OS is IOS");
     /* Get OS name and version */
-    alert(`OS is: ${OS.Name} version: ${IOS.Version}`);
+    alert(`OS is: ${OS.Name} version: ${OS.Version`);
   } else {
     alert("OS is not IOS");
   };
@@ -46,7 +46,7 @@ If you want to detect for MacOS:
   if (OS.Type == "Mac") {
     alert("OS is MacOS");
     /* Get OS name and version */
-    alert(`OS is: ${OS.Name} version: ${OS.Mac.Version}`);
+    alert(`OS is: ${OS.Name} version: ${OS.Version}`);
   } else {
     alert("OS is not MacOS");
   };
