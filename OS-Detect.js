@@ -3,8 +3,7 @@
 /*Variables*/
 var useragent = navigator.userAgent;
 var OSNAME, OS, browser, Type, ConsoleType;
-var Mobile = "False";
-var IOS = "false";
+var Mobile, IOS = "False";
 var iosversion, macversion, windowsversion, playstationversion;
 
 /*Detect if OS is Windows*/
@@ -73,6 +72,8 @@ if (useragent.indexOf("Win") != -1) {
     macversion3 = macversion2.replace(' ', '');
     /*Replace "_" with "."*/
     macversion = macversion3.split('_').join('.');
+  } else if (navigator.appVersion.indexOf("Mac_PowerPC") != -1){
+    macversion = `9`;
   };
   /*Detect if OS is iPad*/
   if (navigator.appVersion.indexOf("iPad") != -1) {
@@ -108,6 +109,10 @@ if (useragent.indexOf("Win") != -1) {
 } else if (navigator.appVersion.indexOf("CrOS") != -1) {
   OSNAME = "Chrome OS";
   Type = "ChromeOS";
+  /*Detect if OS is ubuntu*/
+} else if (navigator.appVersion.indexOf("ubuntu") != -1) {
+  OSNAME = "Ubuntu OS";
+  Type = "Ubuntu";
   /* Detect if OS is Playstation */
 } else if (navigator.appVersion.indexOf("PlayStation") != -1) {
   /* Detect version */
