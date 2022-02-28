@@ -8,7 +8,7 @@ var iosversion, macversion, windowsversion, playstationversion;
 
 async function DetectOS(opts) {
   /* Debug Mode: */
-  if (opts.socket) {
+  if (opts.debug) {
     var debug = opts.debug;
   } else {
     var debug = "false";
