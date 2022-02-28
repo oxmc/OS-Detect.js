@@ -89,3 +89,18 @@ Prints the OS info in the console:
   };
 </script>
 ```
+## Detect OS without button or function call:
+
+You can use an async function like this:
+```html
+function ShowOSInfo(OS) {
+  console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nUserAgent: ${OS.UserAgent}`);
+};
+(async () => {
+  var info = await DetectOS({debug: true});
+  console.log(info);
+  //Deal with info here, call function to handle data etc.
+  //function call:
+  ShowOSInfo(info);
+})();
+```
