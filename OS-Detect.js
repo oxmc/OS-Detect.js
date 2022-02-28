@@ -17,7 +17,7 @@ async function DetectOS(opts) {
   Type = "Unkown";
   /*Detect if OS is Windows*/
   if (useragent.indexOf("Win") != -1) {
-    if (navigator.appVersion.indexOf("Windows Phone") != 1) {
+    if (navigator.appVersion.indexOf("Windows Phone") != -1) {
       let windowsversionstring = useragent.split('Phone')[1].split(";")[0].trim();
       OSNAME = `Windows Phone OS`;
       Type = "WindowsPhone";
@@ -25,6 +25,25 @@ async function DetectOS(opts) {
     let windowsversionstring = useragent.split('NT')[1].split(";")[0].trim();
     OSNAME = `Windows OS`;
     Type = "Windows";
+    /* Windows 11 fix */
+    if (typeof navigator.userAgentData != "undefined") {
+      navigator.userAgentData.getHighEntropyValues(["platformVersion"]).then(ua => {
+        if (navigator.userAgentData.platform === "Windows") {
+          const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+          if (majorPlatformVersion >= 13) {
+            console.log("Windows 11 or later");
+          } else if (majorPlatformVersion > 0) {
+            console.log("Windows 10");
+          } else {
+            console.log("Before Windows 10");
+          }
+        } else {
+          console.log("Not running on Windows");
+        }
+      });
+    } else {
+      console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
+    };
     switch (windowsversionstring) {
       case "10.0":
         windowsversion = "10"
@@ -63,7 +82,7 @@ async function DetectOS(opts) {
       default:
         windowsversion = "unkown";
         break;
-	  };
+    };
   };
   /*Detect if OS is Mac or IOS*/
   if (useragent.indexOf("Mac") != -1) {
@@ -214,17 +233,12 @@ async function DetectOS(opts) {
     "ISIOS": `${IOS}`,
     "ISMobile": `${Mobile}`,
     "Type": `${Type}`
-  }
-  /* Clear variables*/
-  OSNAME = "";
-  browser = "";
-  IOS = "";
-  iosversion = "";
-  macversion = "";
-  windowsversion = "";
-  windowsversionstring = "";
+  };
   /*Log info to console if debug = true*/
   if (opts.debug == true) {
+    console.log("Debug set to true, printing OS info");
     console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nUserAgent: ${OS.UserAgent}`);
   };
+  /* Return OS */
+  return OS;
 };
