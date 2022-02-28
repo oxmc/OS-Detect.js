@@ -70,3 +70,22 @@ If you want to detect the OS version:
   };
 </script>
 ```
+## Options:
+
+OSDetect only has 1 option as of now, debug: true or false
+
+Prints the OS info in the console:
+```html
+<script>
+  async function ShowOS() {
+    const OS = await DetectOS({debug: true});
+    //In console:
+    /*
+    Debug set to true, printing OS info OS-Detect.min.js:1:5101
+    OS: Windows OS
+    Browser: Firefox 97
+    UserAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0 OS-Detect.min.js:1:5152
+    */
+  };
+</script>
+```
