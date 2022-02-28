@@ -230,7 +230,7 @@ async function DetectOS(opts) {
   };
   /*Log info to console if debug = true*/
   if (opts.debug == true) {
-    console.log("Debug set to true, printing OS info");
+    console.info("Debug set to true, printing OS info");
     console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nUserAgent: ${OS.UserAgent}`);
   };
   /* Return OS */
