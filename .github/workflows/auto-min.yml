@@ -1,6 +1,6 @@
-# This is a workflow to auto-minimify api.js
+# This is a workflow to auto-minimify OS-Detect.js
 
-name: Minimify api.js
+name: Minimify OS-Detect.js
 
 # Controls when the workflow will run
 on:
@@ -28,7 +28,7 @@ jobs:
       - name: Auto Minify
         uses: nizarmah/auto-minify@v2.1
         with:
-          output: 'minified_files'
+          output: './'
 
       # Auto commits minified files to the repository
       # Ignore it if you don't want to commit the files to the repository 
