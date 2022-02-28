@@ -13,6 +13,7 @@ To use OS-Detect.js, first include the script in your head element:
   <script type="text/javascript" src="https://osd.oxmc.xyz/OS-Detect.min.js"></script>
 </head>
 ```
+# Get OS
 
 Depending on what OS you want to detect change or modify this to fit your needs,
 
@@ -57,7 +58,7 @@ If you want to detect for MacOS:
   };
 </script>
 ```
------ Get OS Version -----
+## Get OS Version
 
 If you want to detect the OS version:
 ```html
