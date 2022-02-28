@@ -29,8 +29,8 @@ async function DetectOS(opts) {
     if (typeof navigator.userAgentData != "undefined") {
       navigator.userAgentData.getHighEntropyValues(["platformVersion"]).then(ua => {
         if (navigator.userAgentData.platform === "Windows") {
-          const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
-          if (majorPlatformVersion = 13) {
+          var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
+          if (majorPlatformVersion >= 13) {
             windowsversion = "11";
           };
         };
