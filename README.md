@@ -2,7 +2,7 @@
 A javascript function to help detect what OS is accessing the page.
 
 # Example
-<a href="https://oxmc.github.io/OS-Detect.js/example.html">Here is a simple example</a>
+<a href="https://osd.oxmc.xyz/example.html">Here is a simple example</a>
 
 # How to use
 
@@ -10,7 +10,7 @@ To use OS-Detect.js, first include the script in your head element:
 
 ```html
 <head>
-  <script type="text/javascript" src="https://oxmc.github.io/OS-Detect.js/OS-Detect.js"></script>
+  <script type="text/javascript" src="https://osd.oxmc.xyz/OS-Detect.js"></script>
 </head>
 ```
 
@@ -32,8 +32,6 @@ If you want to detect for Iphone, Ipad, or Ipod:
 <script>
   if (OS.ISIOS == "True") {
     alert("OS is IOS");
-    /* Get OS name and version */
-    alert(`OS is: ${OS.Name} version: ${OS.Version`);
   } else {
     alert("OS is not IOS");
   };
@@ -45,10 +43,16 @@ If you want to detect for MacOS:
 <script>
   if (OS.Type == "Mac") {
     alert("OS is MacOS");
-    /* Get OS name and version */
-    alert(`OS is: ${OS.Name} version: ${OS.Version}`);
   } else {
     alert("OS is not MacOS");
   };
 </script>
 ```
+----- Get OS Version -----
+
+If you want to detect the OS version:
+```html
+<script>
+  /* Get OS name and version */
+  alert(`OS is: ${OS.Name} version: ${OS.Version}`);
+</script>
