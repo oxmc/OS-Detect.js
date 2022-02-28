@@ -69,3 +69,4 @@ If you want to detect the OS version:
     alert(`OS is: ${OS.Name} version: ${OS.Version}`);
   };
 </script>
+```
