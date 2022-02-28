@@ -10,7 +10,7 @@ To use OS-Detect.js, first include the script in your head element:
 
 ```html
 <head>
-  <script type="text/javascript" src="https://osd.oxmc.xyz/OS-Detect.js"></script>
+  <script type="text/javascript" src="https://osd.oxmc.xyz/OS-Detect.min.js"></script>
 </head>
 ```
 
