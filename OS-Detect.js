@@ -30,54 +30,48 @@ async function DetectOS(opts) {
       navigator.userAgentData.getHighEntropyValues(["platformVersion"]).then(ua => {
         if (navigator.userAgentData.platform === "Windows") {
           const majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
-          if (majorPlatformVersion >= 13) {
-            console.log("Windows 11 or later");
-          } else if (majorPlatformVersion > 0) {
-            console.log("Windows 10");
-          } else {
-            console.log("Before Windows 10");
-          }
-        } else {
-          console.log("Not running on Windows");
-        }
+          if (majorPlatformVersion = 13) {
+            windowsversion = "11";
+          };
+        };
       });
     } else {
       console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
     };
     switch (windowsversionstring) {
       case "10.0":
-        windowsversion = "10"
+        windowsversion = "10";
         break;
       case "6.3":
-        windowsversion = "8.1"
+        windowsversion = "8.1";
         break;
       case "6.2":
-        windowsversion = "8"
+        windowsversion = "8";
         break;
       case "6.1":
-        windowsversion = "7"
+        windowsversion = "7";
         break;
       case "6.0":
-        windowsversion = "vista"
+        windowsversion = "vista";
         break;
       case "5.2":
       case "5.1":
-        windowsversion = "XP"
+        windowsversion = "XP";
         break;
       case "5.0":
-        windowsversion = "2000"
+        windowsversion = "2000";
         break;
       case "4.0":
-        windowsversion = "NT 4.0"
+        windowsversion = "NT 4.0";
         break;
       case "3.51":
-        windowsversion = "NT 3.51"
+        windowsversion = "NT 3.51";
         break;
       case "3.5":
-        windowsversion = "NT 3.5"
+        windowsversion = "NT 3.5";
         break;
       case "3.1":
-        windowsversion = "NT 3.1"
+        windowsversion = "NT 3.1";
         break;
       default:
         windowsversion = "unkown";
