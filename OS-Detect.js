@@ -8,10 +8,11 @@ var iosversion, macversion, windowsversion, playstationversion;
 
 async function DetectOS(opts) {
   /* Debug Mode: */
-  if (typeof opts.debug != "undefined") {
-    var debug = opts.debug;
-  } else {
-    var debug = "false";
+  let debug = "false";
+  if (typeof opts != "undefined") {
+    if (typeof opts.debug != "undefined") {
+      var debug = opts.debug;
+    };
   };
   OSNAME = "Unkown";
   Type = "Unkown";
