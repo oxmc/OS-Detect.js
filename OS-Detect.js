@@ -1,29 +1,31 @@
 /*OS-Detect.js Copyright oxmc 2021-present*/
 
-/*Variables*/
-var useragent = navigator.userAgent;
-var OSNAME, OS, browser, Type, ConsoleType;
-var Mobile, IOS = "False";
-var iosversion, macversion, windowsversion, playstationversion;
-
 async function DetectOS(opts) {
+  /*Variables*/
+  var useragent = navigator.userAgent;
+  var OSNAME = "Unkown", OS, browser, Type = "Unkown", ConsoleType;
+  var Mobile = IOS = "False";
+  var version;
+  /* Options */
+  var defopts = {
+    debug: false
+  };
   /* Debug Mode: */
-  let debug = "false";
   if (typeof opts != "undefined") {
     if (typeof opts.debug != "undefined") {
       var debug = opts.debug;
     };
+  } else {
+    var opts = defopts;
   };
-  OSNAME = "Unkown";
-  Type = "Unkown";
   /*Detect if OS is Windows*/
   if (useragent.indexOf("Win") != -1) {
     if (navigator.appVersion.indexOf("Windows Phone") != -1) {
-      let windowsversionstring = useragent.split('Phone')[1].split(";")[0].trim();
+      let versionstring = useragent.split('Phone')[1].split(";")[0].trim();
       OSNAME = `Windows Phone OS`;
       Type = "WindowsPhone";
     };
-    let windowsversionstring = useragent.split('NT')[1].split(";")[0].trim();
+    let versionstring = useragent.split('NT')[1].split(";")[0].trim();
     OSNAME = `Windows OS`;
     Type = "Windows";
     /* Windows 11 fix */
@@ -32,50 +34,50 @@ async function DetectOS(opts) {
         if (navigator.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
-            windowsversion = "11";
+            version = "11";
           };
         };
       });
     } else {
       console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
     };
-    switch (windowsversionstring) {
+    switch (versionstring) {
       case "10.0":
-        windowsversion = "10";
+        version = "10";
         break;
       case "6.3":
-        windowsversion = "8.1";
+        version = "8.1";
         break;
       case "6.2":
-        windowsversion = "8";
+        version = "8";
         break;
       case "6.1":
-        windowsversion = "7";
+        version = "7";
         break;
       case "6.0":
-        windowsversion = "vista";
+        version = "vista";
         break;
       case "5.2":
       case "5.1":
-        windowsversion = "XP";
+        version = "XP";
         break;
       case "5.0":
-        windowsversion = "2000";
+        version = "2000";
         break;
       case "4.0":
-        windowsversion = "NT 4.0";
+        version = "NT 4.0";
         break;
       case "3.51":
-        windowsversion = "NT 3.51";
+        version = "NT 3.51";
         break;
       case "3.5":
-        windowsversion = "NT 3.5";
+        version = "NT 3.5";
         break;
       case "3.1":
-        windowsversion = "NT 3.1";
+        version = "NT 3.1";
         break;
       default:
-        windowsversion = "unkown";
+        version = "unkown";
         break;
     };
   };
@@ -84,16 +86,10 @@ async function DetectOS(opts) {
     /*Detect IOS version*/
     if (navigator.appVersion.indexOf("iPhone;") != -1 || navigator.appVersion.indexOf("iPad;") != -1 || navigator.appVersion.indexOf("iPod;") != -1) {
       if (navigator.appVersion.match("iPhone OS") != -1 || navigator.appVersion.match("iPad OS") != -1 || navigator.appVersion.match("iPod OS") != -1) {
-        iosversion1 = useragent.split('OS')[1].split("like")[0].trim();
-        iosversion2 = iosversion1.replace(' ', '');
-        /*Replace "_" with "."*/
-        iosversion = iosversion2.split('_').join('.');
+        version = useragent.split('OS')[1].split("like")[0].trim().replace(' ', '').split('_').join('.');
         IOS = "True";
       } else {
-        iosversion1 = useragent.split('CPU OS')[1].split("like")[0].trim();
-        iosversion2 = iosversion1.replace(' ', '');
-        /*Replace "_" with "."*/
-        iosversion = iosversion2.split('_').join('.');
+        version = useragent.split('CPU OS')[1].split("like")[0].trim().replace(' ', '').split('_').join('.');
         IOS = "True";
       };
       if (IOS == "True") {
@@ -102,13 +98,9 @@ async function DetectOS(opts) {
     };
     if (navigator.appVersion.indexOf("OS X") != -1){
       /*Detect MacOS version*/
-      macversion1 = useragent.split('OS X')[1].split(")")[0].trim();
-      macversion2 = macversion1.replace('OS X', '');
-      macversion3 = macversion2.replace(' ', '');
-      /*Replace "_" with "."*/
-      macversion = macversion3.split('_').join('.');
+      version = useragent.split('OS X')[1].split(")")[0].trim().replace('OS X', '').replace(' ', '').split('_').join('.');
     } else if (navigator.appVersion.indexOf("Mac_PowerPC") != -1){
-      macversion = `9`;
+      version = `9`;
     };
     /*Detect if OS is iPad*/
     if (navigator.appVersion.indexOf("iPad") != -1) {
@@ -161,7 +153,7 @@ async function DetectOS(opts) {
   /* Detect if OS is Playstation */
   if (navigator.appVersion.indexOf("PlayStation") != -1) {
     /* Detect version */
-    playstationversion = useragent.split('PlayStation')[1].split(".")[0].trim().replace('PlayStation', '').replace(' ', '');
+    version = useragent.split('PlayStation')[1].split(".")[0].trim().replace('PlayStation', '').replace(' ', '');
     OSNAME = "PlayStation OS";
     Type = "PlayStation";
   };
@@ -204,21 +196,11 @@ async function DetectOS(opts) {
   } else if (window.navigator.userAgent.indexOf("trident") > -1) {
     browser = `Internet Explorer ${useragent.split('trident/')[1].split(".")[0].trim()}`;
   } else if (OSNAME == "PlayStation OS") {
-    browser = `PlayStation ${playstationversion} Browser`;
+    browser = `PlayStation ${version} Browser`;
     ConsoleType = "PlayStation";
   };
   /*Make json based on variables*/
   version = "unkown";
-  /* Define variables based on OS */
-  if (Type == "Windows") {
-    version = windowsversion
-  } else if (Type == "Mac") {
-    version = macversion
-  } else if (Type == "IOS") {
-    version = iosversion
-  } else if (Type == "Android") {
-    version = androidversion
-  };
   /*Convert variables to json*/
   OS = {
     "Name": `${OSNAME}`,
