@@ -3,15 +3,15 @@
 async function DetectOS(opts) {
   /*Variables*/
   var useragent = navigator.userAgent;
-  var OSNAME = "Unkown", OS, browser, Type = "Unkown", ConsoleType;
-  var Mobile = IOS = "False";
-  var version;
+  var OSNAME = OS = browser = Type = ConsoleType = version = "Unkown";
+  var Mobile = IOS = win11detect = "False";
   /* Options */
   var defopts = {
     debug: false
   };
-  /* Debug Mode: */
+  /* Handle options: */
   if (typeof opts != "undefined") {
+    /* Debug Mode: */
     if (typeof opts.debug != "undefined") {
       var debug = opts.debug;
     };
@@ -30,6 +30,7 @@ async function DetectOS(opts) {
     Type = "Windows";
     /* Windows 11 fix */
     if (typeof navigator.userAgentData != "undefined") {
+      win11detect = "true";
       navigator.userAgentData.getHighEntropyValues(["platformVersion"]).then(ua => {
         if (navigator.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
@@ -199,8 +200,6 @@ async function DetectOS(opts) {
     browser = `PlayStation ${version} Browser`;
     ConsoleType = "PlayStation";
   };
-  /*Make json based on variables*/
-  version = "unkown";
   /*Convert variables to json*/
   OS = {
     "Name": `${OSNAME}`,
@@ -209,7 +208,8 @@ async function DetectOS(opts) {
     "Version": `${version}`,
     "ISIOS": `${IOS}`,
     "ISMobile": `${Mobile}`,
-    "Type": `${Type}`
+    "Type": `${Type}`,
+    "win11support": `${win11detect}`
   };
   /*Log info to console if debug = true*/
   if (opts.debug == true) {
