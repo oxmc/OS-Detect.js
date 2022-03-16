@@ -70,6 +70,26 @@ If you want to detect the OS version:
   };
 </script>
 ```
+
+## Check is device is mobile:
+
+```html
+<script>
+  async function ShowOS() {
+    const OS = await DetectOS({debug: true});
+    /* Get OS name and version */
+    alert(`OS is: ${OS.Name} version: ${OS.Version} IsMobile: ${OS.IsMobile}`);
+    //In console:
+    /*
+    Debug set to true, printing OS info OS-Detect.min.js:1:5101
+    OS: Windows OS
+    Browser: Firefox 97
+    IsMobile: False OS-Detect.min.js:1:5152
+    */
+  };
+</script>
+```
+
 ## Options:
 
 OSDetect only has 1 option as of now, debug: true or false
@@ -92,7 +112,7 @@ Prints the OS info in the console:
 ## Detect OS without button or function call:
 
 You can use an async function like this:
-```html
+```javascript
 function ShowOSInfo(OS) {
   console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nUserAgent: ${OS.UserAgent}`);
 };
