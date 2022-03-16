@@ -71,7 +71,7 @@ If you want to detect the OS version:
 </script>
 ```
 
-## Check is device is mobile:
+## Check if device is mobile:
 
 ```html
 <script>
