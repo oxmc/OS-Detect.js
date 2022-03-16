@@ -99,6 +99,7 @@ Prints the OS info in the console:
 <script>
   async function ShowOS() {
     const OS = await DetectOS({debug: true});
+    console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nIsMobile: ${OS.IsMobile}`);
     //In console:
     /*
     Debug set to true, printing OS info OS-Detect.min.js:1:5101
