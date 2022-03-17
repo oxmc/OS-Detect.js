@@ -83,7 +83,7 @@ If you want to detect the OS version:
     /*
     Debug set to true, printing OS info OS-Detect.min.js:1:5101
     OS: Windows OS
-    Browser: Firefox 97
+    Version: 10
     IsMobile: False OS-Detect.min.js:1:5152
     */
   };
