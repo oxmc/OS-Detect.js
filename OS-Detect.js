@@ -206,8 +206,8 @@ async function DetectOS(opts) {
     "Browser": `${browser}`,
     "UserAgent": `${useragent}`,
     "Version": `${version}`,
-    "ISIOS": `${IOS}`,
-    "ISMobile": `${Mobile}`,
+    "IsIOS": `${IOS}`,
+    "IsMobile": `${Mobile}`,
     "Type": `${Type}`,
     "win11support": `${win11detect}`
   };
