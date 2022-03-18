@@ -92,7 +92,7 @@ If you want to detect the OS version:
 
 ## Options:
 
-OSDetect only has 1 option as of now, debug: true or false
+OS-Detect only has 1 option as of now, debug: true or false
 
 Prints the OS info in the console:
 ```html
