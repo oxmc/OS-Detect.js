@@ -21,11 +21,11 @@ async function DetectOS(opts) {
   /*Detect if OS is Windows*/
   if (useragent.indexOf("Win") != -1) {
     if (navigator.appVersion.indexOf("Windows Phone") != -1) {
-      let versionstring = useragent.split('Phone')[1].split(";")[0].trim();
+      var versionstring = useragent.split('Phone')[1].split(";")[0].trim();
       OSNAME = `Windows Phone OS`;
       Type = "WindowsPhone";
     };
-    let versionstring = useragent.split('NT')[1].split(";")[0].trim();
+    var versionstring = useragent.split('NT')[1].split(";")[0].trim();
     OSNAME = `Windows OS`;
     Type = "Windows";
     /* Windows 11 fix */
@@ -35,7 +35,7 @@ async function DetectOS(opts) {
         if (navigator.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
-            version = "11";
+            versionstring = "11.0";
           };
         };
       });
@@ -43,6 +43,9 @@ async function DetectOS(opts) {
       console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
     };
     switch (versionstring) {
+      case "11.0":
+        version = "11";
+        break;
       case "10.0":
         version = "10";
         break;
