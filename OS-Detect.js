@@ -21,11 +21,11 @@ async function DetectOS(opts) {
   /*Detect if OS is Windows*/
   if (useragent.indexOf("Win") != -1) {
     if (navigator.appVersion.indexOf("Windows Phone") != -1) {
-      var versionstring = useragent.split('Phone')[1].split(";")[0].trim();
+      versionstring = useragent.split('Phone')[1].split(";")[0].trim();
       OSNAME = `Windows Phone OS`;
       Type = "WindowsPhone";
     } else {
-      var versionstring = useragent.split('NT')[1].split(";")[0].trim();
+      versionstring = useragent.split('NT')[1].split(";")[0].trim();
       OSNAME = `Windows OS`;
       Type = "Windows";
     };
@@ -145,7 +145,7 @@ async function DetectOS(opts) {
   if (navigator.appVersion.indexOf("Linux") != -1) {
     /*Detect if OS is Android*/
     if (/Android/.test(useragent)) {
-      androidversion = useragent.split('Android')[1].split(".")[0].trim()
+      version = useragent.split("Android")[1].split(";")[0].trim();
       OSNAME = "Android OS";
       Type = "Android";
     } else {
@@ -212,6 +212,15 @@ async function DetectOS(opts) {
     ConsoleType = "PlayStation";
   };
   /*Convert variables to json*/
+  console.log(OSNAME);
+  console.log(browser);
+  console.log(useragent);
+  console.log(sis);
+  console.log(version);
+  console.log(IOS);
+  console.log(Mobile);
+  console.log(Type);
+  console.log(win11detect);
   OS = {
     "Name": `${OSNAME}`,
     "Browser": `${browser}`,
