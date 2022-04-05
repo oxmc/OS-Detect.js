@@ -112,12 +112,10 @@ async function DetectOS(opts) {
     };
     /*Detect IOS version*/
     if (navigator.appVersion.indexOf("iPhone;") != -1 || navigator.appVersion.indexOf("iPad;") != -1 || navigator.appVersion.indexOf("iPod;") != -1) {
-      sis = "1";
       version = useragent.split("OS")[1].split("Mac")[0].trim().replace("like", "").replace(" ", "").split("_").join(".");
       console.log(version);
       IOS = "True";
     } else if (navigator.appVersion.match("iPhone OS") != -1 || navigator.appVersion.match("iPad OS") != -1 || navigator.appVersion.match("iPod OS") != -1) {
-      sis = "2";
       version = useragent.split("OS")[1].split("like")[0].trim().replace("_", ".");
       console.log(version);
       IOS = "True";
