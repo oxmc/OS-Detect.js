@@ -88,37 +88,45 @@ async function DetectOS(opts) {
   };
   /*Detect if OS is Mac or IOS*/
   if (useragent.indexOf("Mac") != -1) {
+    /*Detect if OS is iPad*/
+    if (navigator.appVersion.indexOf("iPad") != -1) {
+      OSNAME = `iPad OS`;
+      IOS = "True";
+      /*Detect if OS is iPhone*/
+    } else if (navigator.appVersion.indexOf("iPhone") != -1) {
+      OSNAME = `iPhone OS`;
+      IOS = "True";
+      /*Detect if OS is iPod*/
+    } else if (navigator.appVersion.indexOf("iPod") != -1) {
+      OSNAME = `iPod OS`;
+      IOS = "True";
+    } else {
+      OSNAME = `Mac OS`;
+      Type = "Mac";
+      if (navigator.appVersion.indexOf("OS X") != -1){
+        /*Detect MacOS version*/
+        version = useragent.split('OS X')[1].split(")")[0].trim().replace('OS X', '').replace(' ', '').split('_').join('.');
+      } else if (navigator.appVersion.indexOf("Mac_PowerPC") != -1){
+        version = `9`;
+      };
+    };
     /*Detect IOS version*/
     if (navigator.appVersion.indexOf("iPhone;") != -1 || navigator.appVersion.indexOf("iPad;") != -1 || navigator.appVersion.indexOf("iPod;") != -1) {
       sis = "1";
       version = useragent.split("OS")[1].split("Mac")[0].trim().replace("like", "").replace(" ", "").split("_").join(".");
+      console.log(version);
       IOS = "True";
     } else if (navigator.appVersion.match("iPhone OS") != -1 || navigator.appVersion.match("iPad OS") != -1 || navigator.appVersion.match("iPod OS") != -1) {
       sis = "2";
-      version = useragent.split('OS')[1].split("like")[0].trim().replace(' ', '').split('_').join('.');
+      version = useragent.split("OS")[1].split("like")[0].trim().replace("_", ".");
+      console.log(version);
       IOS = "True";
     };
     if (IOS == "True") {
       Type = "IOS";
-    };
-    if (navigator.appVersion.indexOf("OS X") != -1){
-      /*Detect MacOS version*/
-      version = useragent.split('OS X')[1].split(")")[0].trim().replace('OS X', '').replace(' ', '').split('_').join('.');
-    } else if (navigator.appVersion.indexOf("Mac_PowerPC") != -1){
-      version = `9`;
-    };
-    /*Detect if OS is iPad*/
-    if (navigator.appVersion.indexOf("iPad") != -1) {
-      OSNAME = `iPad OS`;
-      /*Detect if OS is iPhone*/
-    } else if (navigator.appVersion.indexOf("iPhone") != -1) {
-      OSNAME = `iPhone OS`;
-      /*Detect if OS is iPod*/
-    } else if (navigator.appVersion.indexOf("iPod") != -1) {
-      OSNAME = `iPod OS`;
-    } else {
-      OSNAME = `Mac OS`;
-      Type = "Mac";
+      if (navigator.appVersion.indexOf("Version/") != -1) {
+        version = useragent.split("Version/")[1].split("Gecko")[0].split("Mobile/")[0].trim();
+      };
     };
   };
   /* Remove unix detection temporarily */
@@ -204,7 +212,7 @@ async function DetectOS(opts) {
     ConsoleType = "PlayStation";
   };
   /*Convert variables to json*/
-  /*console.log(OSNAME);
+  console.log(OSNAME);
   console.log(browser);
   console.log(useragent);
   console.log(sis);
@@ -212,7 +220,7 @@ async function DetectOS(opts) {
   console.log(IOS);
   console.log(Mobile);
   console.log(Type);
-  console.log(win11detect);*/
+  console.log(win11detect);
   OS = {
     "Name": `${OSNAME}`,
     "Browser": `${browser}`,
