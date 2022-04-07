@@ -210,15 +210,6 @@ async function DetectOS(opts) {
     ConsoleType = "PlayStation";
   };
   /*Convert variables to json*/
-  console.log(OSNAME);
-  console.log(browser);
-  console.log(useragent);
-  console.log(sis);
-  console.log(version);
-  console.log(IOS);
-  console.log(Mobile);
-  console.log(Type);
-  console.log(win11detect);
   OS = {
     "Name": `${OSNAME}`,
     "Browser": `${browser}`,
