@@ -172,7 +172,7 @@ async function DetectOS(opts) {
     Mobile = "False";
   };
   /* Detect Browser */
-  if (window.navigator.userAgent.indexOf("Chrome") > -1) {
+  if (window.navigator.userAgent.indexOf("Chrome") > -1 || window.navigator.userAgent.indexOf("CriOS") > -1) {
     if (window.navigator.userAgent.indexOf("Edg") > -1) {
       if (window.navigator.userAgent.indexOf("Edg/") > -1) {
         browser = `Edge ${useragent.split('Edg/')[1].split(".")[0].trim()}`;
