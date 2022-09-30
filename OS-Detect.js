@@ -172,19 +172,7 @@ async function DetectOS(opts) {
     Mobile = "False";
   };
   /* Detect Browser */
-  if (window.navigator.userAgent.indexOf("Chrome") > -1 || window.navigator.userAgent.indexOf("CriOS") > -1) {
-    if (window.navigator.userAgent.indexOf("Edg") > -1) {
-      if (window.navigator.userAgent.indexOf("Edg/") > -1) {
-        browser = `Edge ${useragent.split('Edg/')[1].split(".")[0].trim()}`;
-      } else {
-        browser = `Edge (legacy) ${useragent.split('Edge/')[1].split(".")[0].trim()}`;
-      };
-    } else if (window.navigator.userAgent.indexOf("Puffin") > -1) {
-      browser = `Puffin ${useragent.split('Puffin/')[1].split(".")[0].trim()}`;
-    } else {
-      browser = `Chrome ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;
-    };
-  } else if (window.navigator.userAgent.indexOf("U;") > -1) {
+  if (window.navigator.userAgent.indexOf("U;") > -1) {
     if (window.navigator.userAgent.indexOf("Silk") > -1) {
       browser = `SilkBrowser ${useragent.split('Silk/')[1].split(".")[0].trim()}`;
     } else {
@@ -194,8 +182,12 @@ async function DetectOS(opts) {
     };
   } else if (window.navigator.userAgent.indexOf("SamsungBrowser/") > -1) {
     browser = `SamsungBrowser ${useragent.split('SamsungBrowser/')[1].split(".")[0].trim()}`;
-  } else if (window.navigator.userAgent.indexOf("Opera") > -1) {
-    browser = `Opera ${useragent.split('Opera/')[1].split(".")[0].trim()}`;
+  } else if (window.navigator.userAgent.indexOf("Opera") > -1 || window.navigator.userAgent.indexOf("OPR") > -1) {
+    if (window.navigator.userAgent.indexOf("Opera") > -1) {
+      browser = `Opera ${useragent.split('Opera/')[1].split(".")[0].trim()}`;
+    } else if (window.navigator.userAgent.indexOf("OPR") > -1) {
+      browser = `Opera ${useragent.split('OPR/')[1].split(".")[0].trim()}`;
+    };
   } else if (window.navigator.userAgent.indexOf("Firefox") > -1) {
     browser = `Firefox ${useragent.split('Firefox/')[1].split(".")[0].trim()}`;
   } else if (window.navigator.userAgent.indexOf("Safari") > -1) {
@@ -205,6 +197,22 @@ async function DetectOS(opts) {
   } else if (OSNAME == "PlayStation OS") {
     browser = `PlayStation ${version} Browser`;
     ConsoleType = "PlayStation";
+  } else if (window.navigator.userAgent.indexOf("Chrome") > -1 || window.navigator.userAgent.indexOf("CriOS") > -1) {
+    if (window.navigator.userAgent.indexOf("Edg") > -1) {
+      if (window.navigator.userAgent.indexOf("Edg/") > -1) {
+        browser = `Edge ${useragent.split('Edg/')[1].split(".")[0].trim()}`;
+      } else {
+        browser = `Edge (legacy) ${useragent.split('Edge/')[1].split(".")[0].trim()}`;
+      };
+    } else if (window.navigator.userAgent.indexOf("Puffin") > -1) {
+      browser = `Puffin ${useragent.split('Puffin/')[1].split(".")[0].trim()}`;
+    } else if (window.navigator.userAgent.indexOf("CriOS") > -1) {
+      browser = `Chrome ${useragent.split('CriOS/')[1].split(".")[0].trim()}`;
+    } else if (window.navigator.userAgent.indexOf("CrOS") > -1) {
+      browser = `Chrome ${useragent.split('CrOS/')[1].split(".")[0].trim()}`;
+    } else {
+      browser = `Chrome ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;
+    };
   };
   /*Convert variables to json*/
   OS = {
