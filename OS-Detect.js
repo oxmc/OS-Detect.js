@@ -54,7 +54,13 @@ async function DetectOS(opts) {
         };
       });
     } else {
-      console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
+      /* Check if site is using https */
+      var protocal = "https" ? "http" : `://${location.hostname}`;
+      if (protocal == "https") {
+        console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
+      } else {
+        console.warn("Unable to detect for windows 11 and later, navigator.userAgentData requires the page to be hosted over HTTPS which this page is not.");
+      };
     };
     switch (versionstring) {
       case "11.0":
