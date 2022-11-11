@@ -203,8 +203,6 @@ async function DetectOS(opts) {
     };
   } else if (window.navigator.userAgent.indexOf("Firefox") > -1) {
     browser = `Firefox ${useragent.split('Firefox/')[1].split(".")[0].trim()}`;
-  } else if (window.navigator.userAgent.indexOf("Safari") > -1) {
-    browser = `Safari ${useragent.split('Safari/')[1].split(".")[0].trim()}`;
   } else if (window.navigator.userAgent.indexOf("trident") > -1) {
     browser = `Internet Explorer ${useragent.split('trident/')[1].split(".")[0].trim()}`;
   } else if (OSNAME == "PlayStation OS") {
@@ -226,6 +224,8 @@ async function DetectOS(opts) {
     } else {
       browser = `Chrome ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;
     };
+  } else if (window.navigator.userAgent.indexOf("Safari") > -1) {
+    browser = `Safari ${useragent.split('Safari/')[1].split(".")[0].trim()}`;
   };
   /*Convert variables to json*/
   OS = {
