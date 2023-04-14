@@ -1,4 +1,4 @@
-/*OS-Detect.js Copyright oxmc 2021-present*/
+/*OS-Detect.js Copyright oxmc 2021-2023*/
 
 /* Polly fill for .replaceAll() */
 if (!String.prototype.replaceAll) {
