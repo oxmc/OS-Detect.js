@@ -45,19 +45,22 @@ async function DetectOS(opts) {
     /* Windows 11 fix */
     if (typeof navigator.userAgentData !== "undefined") {
       win11detect = "true";
-      navigator.userAgentData.getHighEntropyValues(["platformVersion"]).then(ua => {
+      try {
+        const ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);
         if (navigator.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
             versionstring = "11.0";
           };
         };
-      });
+      } catch (error) {
+        console.warn("Unable to detect for windows 11 and later:", error.message);
+      }
     } else {
       /* Check if site is using https */
-      var protocal = "https" ? "http" : `://${location.hostname}`;
-      if (protocal == "https") {
-        console.warn("Unable to detect for windows 11 and later, browser does not suport navigator.userAgentData");
+      var protocol = location.protocol === "https:" ? "https" : "http";
+      if (protocol === "https") {
+        console.warn("Unable to detect for windows 11 and later, browser does not support navigator.userAgentData");
       } else {
         console.warn("Unable to detect for windows 11 and later, navigator.userAgentData requires the page to be hosted over HTTPS which this page is not.");
       };
