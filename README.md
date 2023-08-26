@@ -2,7 +2,7 @@
 A javascript function to help detect what OS is accessing the page.
 
 # Example
-<a href="https://oxmc.is-a.dev/os-detect.js/example.html">Here is a simple example</a>
+<a href="https://oxmc.is-a.dev/OS-Detect.js/example.html">Here is a simple example</a>
 
 # How to use
 
@@ -10,7 +10,7 @@ To use OS-Detect.js, first include the script in your head element:
 
 ```html
 <head>
-  <script type="text/javascript" src="https://oxmc.is-a.dev/os-detect.js/OS-Detect.min.js"></script>
+  <script type="text/javascript" src="https://oxmc.is-a.dev/OS-Detect.js/OS-Detect.min.js"></script>
 </head>
 ```
 ## Get OS
