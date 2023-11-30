@@ -130,11 +130,11 @@ window.osd.detectOS = async function (opts) {
       Type = "Windows";
     };
     /* Windows 11 fix */
-    if (typeof useragent.userAgentData !== "undefined") {
+    if (typeof navigator.userAgentData !== "undefined") {
       win11detect = true;
       try {
         const ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);
-        if (useragent.userAgentData.platform === "Windows") {
+        if (navigator.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
             versionstring = "11.0";
