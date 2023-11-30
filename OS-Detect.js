@@ -2,38 +2,125 @@
 
 /* Polly fill for .replaceAll() */
 if (!String.prototype.replaceAll) {
-  String.prototype.replaceAll = function (str, newStr){
+  String.prototype.replaceAll = function (str, newStr) {
     // If a regex pattern
-    if (Object.prototype.toString.call(str).toLowerCase() === '[object regexp]') {
+    if (str instanceof RegExp) {
       return this.replace(str, newStr);
     }
     // If a string
     return this.replace(new RegExp(str, 'g'), newStr);
   };
-};
+}
 
 /* OS-Detect Function */
-async function DetectOS(opts) {
+window.osd = {};
+window.osd.detectOS = async function (opts) {
   /*Variables*/
-  var useragent = navigator.userAgent;
-  var OSNAME = OS = browser = Type = ConsoleType = version = "Unknown";
-  var Mobile = IOS = win11detect = "False";
+  const useragent = navigator.userAgent;
+  let OSNAME = OS = Type = ConsoleType = version = "Unknown";
+  let Mobile = IOS = win11detect = debug = false;
+
   /* Options */
-  var defopts = {
+  const defopts = {
     debug: false
   };
+
   /* Handle options: */
   if (typeof opts !== "undefined") {
     /* Debug Mode: */
     if (typeof opts.debug !== "undefined") {
-      var debug = opts.debug;
+      debug = opts.debug;
     };
   } else {
-    var opts = defopts;
+    opts = defopts;
   };
+
+  /*Detect if device is mobile*/
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(useragent)) {
+    Mobile = true;
+  } else {
+    Mobile = false;
+  };
+
+  /* Detect Browser */
+  function getBrowserInfo(useragent) {
+    let browserName = "";
+    let browserVersion = "";
+
+    if (useragent.includes("Silk/")) {
+      browserName = "SilkBrowser";
+      browserVersion = getVersion(useragent, 'Silk/');
+    } else if (useragent.includes("UCBrowser/")) {
+      browserName = "UCBrowser";
+      browserVersion = getVersion(useragent, 'UCBrowser/');
+    } else if (useragent.includes("SamsungBrowser/")) {
+      browserName = "SamsungBrowser";
+      browserVersion = getVersion(useragent, 'SamsungBrowser/');
+    } else if (useragent.includes("Opera") || useragent.includes("OPR")) {
+      browserName = "Opera";
+      browserVersion = getOperaVersion(useragent);
+    } else if (useragent.includes("Firefox/")) {
+      browserName = "Firefox";
+      browserVersion = getVersion(useragent, 'Firefox/');
+    } else if (useragent.includes("trident/")) {
+      browserName = "Internet Explorer";
+      browserVersion = getVersion(useragent, 'trident/');
+    } else if (OSNAME == "PlayStation OS") {
+      browserName = `PlayStation ${version} Browser`;
+      ConsoleType = "PlayStation";
+    } else if (useragent.includes("Chrom") || useragent.includes("CriOS")) {
+      if (useragent.includes("Edg") || useragent.includes("Edge")) {
+        browserName = "Edge (chromium)";
+      } else if (useragent.includes("Chromium")) {
+        browserName = "Chromium";
+      } else {
+        browserName = "Chrome";
+      }
+      browserVersion = getChromeVersion(useragent);
+    } else if (useragent.includes("Safari")) {
+      browserName = "Safari";
+      browserVersion = getVersion(useragent, 'Safari/');
+    }
+
+    return { browserName, browserVersion };
+  }
+
+  function getVersion(useragent, identifier) {
+    return useragent.split(identifier)[1].split(".")[0].trim() || "";
+  }
+
+  function getOperaVersion(useragent) {
+    const identifiers = ["Opera/", "OPR/"];
+    for (const identifier of identifiers) {
+      if (useragent.includes(identifier)) {
+        return `Opera ${getVersion(useragent, identifier)}`;
+      }
+    }
+    return "";
+  }
+
+  function getChromeVersion(useragent) {
+    if (useragent.includes("Edg") || useragent.includes("Edge")) {
+      return useragent.includes("Edg/") ? `${getVersion(useragent, 'Edg/')}` : `${getVersion(useragent, 'Edge/')}`;
+    } else if (useragent.includes("Puffin/")) {
+      return getVersion(useragent, 'Puffin/');
+    } else if (useragent.includes("CriOS")) {
+      return getVersion(useragent, 'CriOS');
+    } else if (useragent.includes("CrOS")) {
+      return getVersion(useragent, 'Chrome/');
+    } else if (useragent.includes("Chromium")) {
+      return getVersion(useragent, 'Chromium/');
+    } else {
+      return getVersion(useragent, 'Chrome/');
+    }
+  }
+
+  /* Get browser info */
+  const { browserName, browserVersion } = getBrowserInfo(useragent);
+
   /*Detect if OS is Windows*/
-  if (useragent.indexOf("Win") !== -1) {
-    if (navigator.appVersion.indexOf("Windows Phone") !== -1) {
+  if (useragent.includes("Win")) {
+    if (useragent.includes("Windows Phone")) {
       versionstring = useragent.split('Phone')[1].split(";")[0].trim();
       OSNAME = `Windows Phone OS`;
       Type = "WindowsPhone";
@@ -43,11 +130,11 @@ async function DetectOS(opts) {
       Type = "Windows";
     };
     /* Windows 11 fix */
-    if (typeof navigator.userAgentData !== "undefined") {
-      win11detect = "true";
+    if (typeof useragent.userAgentData !== "undefined") {
+      win11detect = true;
       try {
-        const ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);
-        if (navigator.userAgentData.platform === "Windows") {
+        const ua = await useragent.userAgentData.getHighEntropyValues(["platformVersion"]);
+        if (useragent.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
             versionstring = "11.0";
@@ -108,58 +195,62 @@ async function DetectOS(opts) {
         break;
     };
   };
+
   /*Detect if OS is Mac or IOS*/
-  if (useragent.indexOf("Mac") !== -1) {
+  if (useragent.includes("Mac")) {
     /*Detect if OS is iPad*/
-    if (navigator.appVersion.indexOf("iPad") !== -1) {
+    if (useragent.includes("iPad")) {
       OSNAME = `iPad OS`;
-      IOS = "True";
+      IOS = true;
       /*Detect if OS is iPhone*/
-    } else if (navigator.appVersion.indexOf("iPhone") !== -1) {
+    } else if (useragent.includes("iPhone")) {
       OSNAME = `iPhone OS`;
-      IOS = "True";
+      IOS = true;
       /*Detect if OS is iPod*/
-    } else if (navigator.appVersion.indexOf("iPod") !== -1) {
+    } else if (useragent.includes("iPod")) {
       OSNAME = `iPod OS`;
-      IOS = "True";
+      IOS = true;
     } else {
       OSNAME = `Mac OS`;
       Type = "Mac";
-      if (navigator.appVersion.indexOf("OS X") !== -1){
+      if (useragent.includes("OS X")) {
         /*Detect MacOS version*/
         version = useragent.split('OS X')[1].split(")")[0].trim().replace('OS X', '').replace(' ', '').split('_').join('.');
-      } else if (navigator.appVersion.indexOf("Mac_PowerPC") !== -1){
+      } else if (useragent.includes("Mac_PowerPC")) {
         version = `9`;
       };
     };
     /*Detect IOS version*/
-    if (IOS == "True") {
+    if (IOS == true) {
       Type = "IOS";
-      if (navigator.appVersion.indexOf("iPhone;") !== -1 || navigator.appVersion.indexOf("iPad;") !== -1 || navigator.appVersion.indexOf("iPod;") !== -1) {
+      if (useragent.includes("iPhone") || useragent.includes("iPad") || useragent.includes("iPod")) {
         version = useragent.split("OS")[1].split("Mac")[0].trim().replace("like", "").replace(" ", "").split("_").join(".");
-        IOS = "True";
-      } else if (navigator.appVersion.match("iPhone OS") !== -1 || navigator.appVersion.match("iPad OS") !== -1 || navigator.appVersion.match("iPod OS") !== -1) {
+        IOS = true;
+      } else if (navigator.appVersion.match("iPhone OS") || navigator.appVersion.match("iPad OS") || navigator.appVersion.match("iPod OS")) {
         version = useragent.split("OS")[1].split("like")[0].trim().replace("_", ".");
-        IOS = "True";
-      } else if (navigator.appVersion.indexOf("Version/") != -1) {
+        IOS = true;
+      } else if (useragent.includes("Version/")) {
         version = useragent.split("Version/")[1].split("Gecko")[0].split("Mobile/")[0].trim();
       };
     };
   };
+
   /* Remove unix detection temporarily */
   /*Detect if OS is Unix*/
   /*
-  if (navigator.appVersion.indexOf("X11") != -1) {
+  if (useragent.includes("X11")) {
     OSNAME = "Unix OS";
     Type = "Unix";
   };
   */
+
   /*Detect Blackberry OS*/
   if (useragent.match(/BlackBerry|BB|PlayBook/i)) {
     OSNAME = `BlackBerry OS`;
   };
+
   /*Detect if OS is Linux or Android*/
-  if (navigator.appVersion.indexOf("Linux") != -1) {
+  if (useragent.includes("Linux")) {
     /*Detect if OS is Android*/
     if (/Android/.test(useragent)) {
       version = useragent.split("Android")[1].split(";")[0].trim();
@@ -170,102 +261,54 @@ async function DetectOS(opts) {
       Type = "Linux";
     };
   };
+
   /*Detect if OS is ChromeOS*/
-  if (navigator.appVersion.indexOf("CrOS") != -1) {
+  if (useragent.includes("CrOS")) {
     OSNAME = "Chrome OS";
     Type = "ChromeOS";
   };
+
   /*Detect if OS is ubuntu*/
-  if (navigator.appVersion.indexOf("ubuntu") != -1) {
+  if (useragent.includes("ubuntu")) {
     OSNAME = "Ubuntu OS";
     Type = "Ubuntu";
   };
+
   /* Detect if OS is Playstation */
-  if (navigator.appVersion.indexOf("PlayStation") != -1) {
+  if (useragent.includes("PlayStation")) {
     /* Detect version */
     version = useragent.split('PlayStation')[1].split(".")[0].trim().replace('PlayStation', '').replace(' ', '');
     OSNAME = "PlayStation OS";
     Type = "PlayStation";
   };
-  /*Detect if device is mobile*/
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(useragent)) {
-    Mobile = "True";
-  } else {
-    Mobile = "False";
-  };
-  /* Detect Browser */
-  if (useragent.indexOf("U;") > -1) {
-    if (useragent.indexOf("Silk/") > -1) {
-      browser = `SilkBrowser ${useragent.split('Silk/')[1].split(".")[0].trim()}`;
-	} else if (useragent.indexOf("Silk") > -1) {
-      browser = `SilkBrowser ${useragent.split('Silk')[1].split(".")[0].trim()}`;
-    } else {
-      if (useragent.indexOf("UCBrowser/") > -1) {
-        browser = `UCBrowser ${useragent.split('UCBrowser/')[1].split(".")[0].trim()}`;
-      } else if (useragent.indexOf("UCBrowser") > -1) {
-        browser = `UCBrowser ${useragent.split('UCBrowser')[1].split(".")[0].trim()}`;
-      };
-    };
-  } else if (useragent.indexOf("SamsungBrowser/") > -1) {
-    browser = `SamsungBrowser ${useragent.split('SamsungBrowser/')[1].split(".")[0].trim()}`;
-  } else if (useragent.indexOf("SamsungBrowser") > -1) {
-    browser = `SamsungBrowser ${useragent.split('SamsungBrowser')[1].split(".")[0].trim()}`;
-  } else if (useragent.indexOf("Opera") > -1 || useragent.indexOf("OPR") > -1) {
-    if (useragent.indexOf("Opera/") > -1) {
-      browser = `Opera ${useragent.split('Opera/')[1].split(".")[0].trim()}`;
-	} else if (useragent.indexOf("Opera") > -1) {
-      browser = `Opera ${useragent.split('Opera')[1].split(".")[0].trim()}`;
-    } else if (useragent.indexOf("OPR/") > -1) {
-      browser = `Opera ${useragent.split('OPR/')[1].split(".")[0].trim()}`;
-    } else if (useragent.indexOf("OPR") > -1) {
-      browser = `Opera ${useragent.split('OPR')[1].split(".")[0].trim()}`;
-	};
-  } else if (useragent.indexOf("Firefox/") > -1) {
-    browser = `Firefox ${useragent.split('Firefox/')[1].split(".")[0].trim()}`;
-  } else if (useragent.indexOf("Firefox") > -1) {
-    browser = `Firefox ${useragent.split('Firefox')[1].split(".")[0].trim()}`;
-  } else if (useragent.indexOf("trident/") > -1) {
-    browser = `Internet Explorer ${useragent.split('trident/')[1].split(".")[0].trim()}`;
-  } else if (useragent.indexOf("trident") > -1) {
-    browser = `Internet Explorer ${useragent.split('trident')[1].split(".")[0].trim()}`;
-  } else if (OSNAME == "PlayStation OS") {
-    browser = `PlayStation ${version} Browser`;
-    ConsoleType = "PlayStation";
-  } else if (useragent.indexOf("Chrome") > -1 || useragent.indexOf("CriOS") > -1) {
-    if (useragent.indexOf("Edg") > -1) {
-      if (useragent.indexOf("Edg/") > -1) {
-        browser = `Edge ${useragent.split('Edg/')[1].split(".")[0].trim()}`;
-      } else {
-        browser = `Edge (legacy) ${useragent.split('Edge/')[1].split(".")[0].trim()}`;
-      };
-    } else if (useragent.indexOf("Puffin/") > -1) {
-      browser = `Puffin ${useragent.split('Puffin/')[1].split(".")[0].trim()}`;
-    /*} else if (useragent.indexOf("CriOS") > -1) {
-      browser = `Chrome on IOS ${useragent.split('CriOS')[1].split(".")[0].trim()}`;
-    } else if (useragent.indexOf("CrOS") > -1) {
-      browser = `Chrome on ChromeOS ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;*/
-	} else {
-      browser = `Chrome ${useragent.split('Chrome/')[1].split(".")[0].trim()}`;
-    };
-  } else if (useragent.indexOf("Safari") > -1) {
-    browser = `Safari ${useragent.split('Safari/')[1].split(".")[0].trim()}`;
-  };
+
   /*Convert variables to json*/
   OS = {
-    "Name": `${OSNAME}`,
-    "Browser": `${browser}`,
-    "UserAgent": `${useragent}`,
-    "Version": `${version}`,
-    "IsIOS": `${IOS}`,
-    "IsMobile": `${Mobile}`,
-    "Type": `${Type}`,
-    "win11support": `${win11detect}`
+    name: OSNAME,
+    browser: {
+      name: browserName,
+      version: browserVersion,
+      combined: `${browserName} ${browserVersion}`
+    },
+    userAgent: useragent,
+    version: version,
+    isIOS: IOS,
+    isMobile: Mobile,
+    type: Type,
+    win11support: win11detect
   };
+
+  /* Add icon code if browsericons addon is included */
+  if (typeof osd.bi === 'function') {
+    OS.browser.icon = osd.bi(OS.browser.name);
+  }
+
   /*Log info to console if debug = true*/
-  if (opts.debug == true) {
+  if (debug == true) {
     console.info("Debug set to true, printing OS info");
-    console.log(`OS: ${OS.Name}\nBrowser: ${OS.Browser}\nUserAgent: ${OS.UserAgent}`);
+    console.log(`OS: ${OS.name}\nBrowser: ${OS.browser.combined}\nUserAgent: ${OS.userAgent}`);
   };
+
   /* Return OS */
   return OS;
 };

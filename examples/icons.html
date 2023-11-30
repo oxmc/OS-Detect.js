@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>OS Detect | icons</title>
+  <link rel="stylesheet" href="https://projassets.oxmc.is-a.dev/fa/web/6.4.2/css/all.min.css" type="text/css">
+  <link rel="stylesheet" href="https://oxmc.is-a.dev/browser-logos-css/dist/browser-logos.min.css" type="text/css">
+  <link rel="stylesheet" href="./site/style.css" type="text/css">
+  <script type="text/javascript" src="../OS-Detect.js"></script>
+  <script type="text/javascript" src="../addon/browser-icons.js"></script>
+</head>
+<body>
+  <div id="OS-Info" class="divround">
+    <div class="boldgreen" style="text-align: center;">
+      <p>This example is similar to the last one, except it shows the browsers icon with the help of <a href="https://github.com/oxmc/browser-logos-css">browser-logos-css</a></p>
+      <button onclick="ShowOS();" class="btn"><i class="fa fa-computer"></i> Detect OS</button>
+    </div>
+    <br>
+    <div id="notif" class="notif" style="display: none;">
+      <strong id="notif-title" style="margin-right: 10px;"></strong>
+      <p id="notif-message"></p>
+    </div>
+    <div id="content"></div>
+    <script type="text/javascript" src="./site/demo.js"></script>
+  </div>
+</body>
+</html>

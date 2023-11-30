@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>OS Detect</title>
+  <link rel="stylesheet" href="https://projassets.oxmc.is-a.dev/fa/web/6.4.2/css/all.min.css" type="text/css">
+  <link rel="stylesheet" href="./site/style.css" type="text/css">
+  <script type="text/javascript" src="../OS-Detect.js"></script>
+</head>
+<body>
+  <div id="OS-Info" class="divround">
+    <div class="center-text">
+      <p>This example is the most basic, showing you only certain info such as:</p>
+      <p class="green">Your browser name and version, your os name and version, and your useragent</p>
+      <button onclick="ShowOS();" class="btn"><i class="fa fa-computer"></i> Detect OS</button>
+    </div>
+    <br>
+    <div id="notif" class="notif" style="display: none;">
+      <strong id="notif-title" style="margin-right: 10px;"></strong>
+      <p id="notif-message"></p>
+    </div>
+    <div id="content"></div>
+    <script type="text/javascript" src="./site/demo.js"></script>
+  </div>
+</body>
+</html>
