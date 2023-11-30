@@ -133,7 +133,7 @@ window.osd.detectOS = async function (opts) {
     if (typeof useragent.userAgentData !== "undefined") {
       win11detect = true;
       try {
-        const ua = await useragent.userAgentData.getHighEntropyValues(["platformVersion"]);
+        const ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);
         if (useragent.userAgentData.platform === "Windows") {
           var majorPlatformVersion = parseInt(ua.platformVersion.split('.')[0]);
           if (majorPlatformVersion >= 13) {
