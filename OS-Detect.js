@@ -71,6 +71,8 @@ window.osd.detectOS = async function (opts) {
     } else if (useragent.includes("Chrom") || useragent.includes("CriOS")) {
       if (useragent.includes("Edg") || useragent.includes("Edge")) {
         browserName = "Edge (chromium)";
+      } else if (useragent.includes("BracketBrowser") || useragent.includes("BracketBrowser")) {
+        browserName = "BracketBrowser (electron)";
       } else if (useragent.includes("Chromium")) {
         browserName = "Chromium";
       } else {
@@ -102,6 +104,8 @@ window.osd.detectOS = async function (opts) {
   function getChromeVersion(useragent) {
     if (useragent.includes("Edg") || useragent.includes("Edge")) {
       return useragent.includes("Edg/") ? `${getVersion(useragent, 'Edg/')}` : `${getVersion(useragent, 'Edge/')}`;
+    } else if (useragent.includes("BracketBrowser/")) {
+      return useragent.split("BracketBrowser/")[1].split(" ")[0].trim() || "";
     } else if (useragent.includes("Puffin/")) {
       return getVersion(useragent, 'Puffin/');
     } else if (useragent.includes("CriOS")) {
