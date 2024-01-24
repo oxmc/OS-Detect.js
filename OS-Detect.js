@@ -53,6 +53,9 @@ window.osd.detectOS = async function (opts) {
     } else if (useragent.includes("UCBrowser/")) {
       browserName = "UCBrowser";
       browserVersion = getVersion(useragent, 'UCBrowser/');
+    } else if (useragent.includes("OculusBrowser/")) {
+      browserName = "OculusBrowser";
+      browserVersion = getVersion(useragent, 'OculusBrowser/');
     } else if (useragent.includes("SamsungBrowser/")) {
       browserName = "SamsungBrowser";
       browserVersion = getVersion(useragent, 'SamsungBrowser/');
@@ -62,13 +65,16 @@ window.osd.detectOS = async function (opts) {
     } else if (useragent.includes("Firefox/")) {
       browserName = "Firefox";
       browserVersion = getVersion(useragent, 'Firefox/');
+    } else if (useragent.includes("FxiOS")) {
+      browserName = "Firefox";
+      browserVersion = getVersion(useragent, 'FxiOS/');
     } else if (useragent.includes("trident/")) {
       browserName = "Internet Explorer";
       browserVersion = getVersion(useragent, 'trident/');
     } else if (OSNAME == "PlayStation OS") {
       browserName = `PlayStation ${version} Browser`;
       ConsoleType = "PlayStation";
-    } else if (useragent.includes("Chrom") || useragent.includes("CriOS")) {
+    } else if (useragent.includes("Chrom")) {
       if (useragent.includes("Edg") || useragent.includes("Edge")) {
         browserName = "Edge (chromium)";
       } else if (useragent.includes("BracketBrowser") || useragent.includes("BracketBrowser")) {
@@ -78,6 +84,12 @@ window.osd.detectOS = async function (opts) {
       } else {
         browserName = "Chrome";
       }
+      browserVersion = getChromeVersion(useragent);
+    } else if (useragent.includes("CriOS")) {
+      browserName = "Chrome";
+      browserVersion = getChromeVersion(useragent);
+    } else if (useragent.includes("CrOS")) {
+      browserName = "Chrome";
       browserVersion = getChromeVersion(useragent);
     } else if (useragent.includes("Safari")) {
       browserName = "Safari";
@@ -106,10 +118,10 @@ window.osd.detectOS = async function (opts) {
       return useragent.includes("Edg/") ? `${getVersion(useragent, 'Edg/')}` : `${getVersion(useragent, 'Edge/')}`;
     } else if (useragent.includes("BracketBrowser/")) {
       return useragent.split("BracketBrowser/")[1].split(" ")[0].trim() || "";
-    } else if (useragent.includes("Puffin/")) {
+    } else if (useragent.includes("Puffin")) {
       return getVersion(useragent, 'Puffin/');
     } else if (useragent.includes("CriOS")) {
-      return getVersion(useragent, 'CriOS');
+      return getVersion(useragent, 'CriOS/');
     } else if (useragent.includes("CrOS")) {
       return getVersion(useragent, 'Chrome/');
     } else if (useragent.includes("Chromium")) {
@@ -206,14 +218,17 @@ window.osd.detectOS = async function (opts) {
     if (useragent.includes("iPad")) {
       OSNAME = `iPad OS`;
       IOS = true;
+      Type = "Mobile";
       /*Detect if OS is iPhone*/
     } else if (useragent.includes("iPhone")) {
       OSNAME = `iPhone OS`;
       IOS = true;
+      Type = "Mobile";
       /*Detect if OS is iPod*/
     } else if (useragent.includes("iPod")) {
       OSNAME = `iPod OS`;
       IOS = true;
+      Type = "Mobile";
     } else {
       OSNAME = `Mac OS`;
       Type = "Mac";
@@ -260,6 +275,9 @@ window.osd.detectOS = async function (opts) {
       version = useragent.split("Android")[1].split(";")[0].trim();
       OSNAME = "Android OS";
       Type = "Android";
+    } else if (useragent.includes("Quest")) {
+      OSNAME = "Quest OS (android)";
+      Type = "AndroidVR";
     } else {
       OSNAME = "Linux OS";
       Type = "Linux";
@@ -269,13 +287,13 @@ window.osd.detectOS = async function (opts) {
   /*Detect if OS is ChromeOS*/
   if (useragent.includes("CrOS")) {
     OSNAME = "Chrome OS";
-    Type = "ChromeOS";
+    Type = "Linux";
   };
 
   /*Detect if OS is ubuntu*/
   if (useragent.includes("ubuntu")) {
     OSNAME = "Ubuntu OS";
-    Type = "Ubuntu";
+    Type = "Linux";
   };
 
   /* Detect if OS is Playstation */
