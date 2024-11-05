@@ -76,7 +76,11 @@ window.osd.detectOS = async function (opts) {
       ConsoleType = "PlayStation";
     } else if (useragent.includes("Chrom")) {
       if (useragent.includes("Edg") || useragent.includes("Edge")) {
-        browserName = "Edge (chromium)";
+        if (useragent.includes("Ocean")) {
+          browserName = "OceanBrowser (EdgeWebview2)";
+        } else {
+          browserName = "Edge (chromium)";
+        };
       } else if (useragent.includes("BracketBrowser") || useragent.includes("BracketBrowser")) {
         browserName = "BracketBrowser (electron)";
       } else if (useragent.includes("Chromium")) {
@@ -115,7 +119,11 @@ window.osd.detectOS = async function (opts) {
 
   function getChromeVersion(useragent) {
     if (useragent.includes("Edg") || useragent.includes("Edge")) {
-      return useragent.includes("Edg/") ? `${getVersion(useragent, 'Edg/')}` : `${getVersion(useragent, 'Edge/')}`;
+      if (useragent.includes("Ocean/")) {
+        return getVersion(useragent, 'Ocean/');
+      } else {
+        return useragent.includes("Edg/") ? `${getVersion(useragent, 'Edg/')}` : `${getVersion(useragent, 'Edge/')}`;
+      };
     } else if (useragent.includes("BracketBrowser/")) {
       return useragent.split("BracketBrowser/")[1].split(" ")[0].trim() || "";
     } else if (useragent.includes("Puffin")) {
@@ -146,7 +154,15 @@ window.osd.detectOS = async function (opts) {
       Type = "Windows";
     };
     /* Windows 11 fix */
-    if (typeof navigator.userAgentData !== "undefined") {
+    if (typeof navigator.userAgentData === "undefined") {
+      /* Check if site is using https */
+      var protocol = location.protocol === "https:" ? "https" : "http";
+      if (protocol === "https") {
+        console.warn("Unable to detect for windows 11 and later, browser does not support navigator.userAgentData");
+      } else {
+        console.warn("Unable to detect for windows 11 and later, navigator.userAgentData requires the page to be hosted over HTTPS which this page is not.");
+      };
+    } else {
       win11detect = true;
       try {
         const ua = await navigator.userAgentData.getHighEntropyValues(["platformVersion"]);
@@ -159,14 +175,6 @@ window.osd.detectOS = async function (opts) {
       } catch (error) {
         console.warn("Unable to detect for windows 11 and later:", error.message);
       }
-    } else {
-      /* Check if site is using https */
-      var protocol = location.protocol === "https:" ? "https" : "http";
-      if (protocol === "https") {
-        console.warn("Unable to detect for windows 11 and later, browser does not support navigator.userAgentData");
-      } else {
-        console.warn("Unable to detect for windows 11 and later, navigator.userAgentData requires the page to be hosted over HTTPS which this page is not.");
-      };
     };
     switch (versionstring) {
       case "11.0":
